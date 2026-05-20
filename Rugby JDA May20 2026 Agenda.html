@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rugby JDA — May 20, 2026 Board Meeting</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #5a5a5a;
+    --rule: #d4c9b0;
+    --accent: #2b5329;
+    --accent-light: #e8f0e8;
+    --gold: #9a7b2f;
+    --paper: #faf8f4;
+    --white: #ffffff;
+    --note-bg: #fffef5;
+    --note-border: #e8d98a;
+    --motion-bg: #f0f7f0;
+    --motion-border: #a8cca8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid var(--rule);
+    box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    padding: 64px 72px;
+  }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--accent);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .toolbar-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .toolbar-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .toolbar-btn:hover { background: rgba(255,255,255,0.28); }
+  .toolbar-btn.gold { background: var(--gold); border-color: var(--gold); }
+  .toolbar-btn.gold:hover { background: #b8932e; }
+  #save-status {
+    font-size: 11px;
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+  .org-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .meeting-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .meeting-meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-item { font-size: 13px; color: var(--muted); }
+  .meta-item strong { color: var(--ink); font-weight: 600; }
+
+  /* ── Sections ── */
+  .section { margin-bottom: 36px; }
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ── Agenda items ── */
+  .agenda-item {
+    display: flex;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0ece4;
+    align-items: flex-start;
+  }
+  .agenda-item:last-child { border-bottom: none; }
+
+  .item-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--rule);
+    font-weight: 600;
+    min-width: 32px;
+    line-height: 1.4;
+    padding-top: 2px;
+  }
+  .item-body { flex: 1; }
+  .item-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .item-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  /* ── Doc links ── */
+  .doc-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; margin-bottom: 4px; }
+  .doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--accent-light);
+    border: 1px solid #c5d9c4;
+    border-radius: 3px;
+    padding: 4px 10px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .doc-link:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
+  .doc-link svg { flex-shrink: 0; }
+
+  /* ── Action badge ── */
+  .action-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── Notes toggle button ── */
+  .notes-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: 1px dashed #c8b87a;
+    border-radius: 3px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--gold);
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+  .notes-toggle:hover { background: #fffbe8; border-color: var(--gold); }
+  .notes-toggle.active { background: var(--note-bg); border-style: solid; border-color: var(--note-border); color: #7a5f1a; }
+
+  /* ── Notes panel ── */
+  .notes-panel {
+    display: none;
+    margin-top: 10px;
+    background: var(--note-bg);
+    border: 1px solid var(--note-border);
+    border-radius: 4px;
+    padding: 12px 14px;
+    animation: fadeIn 0.15s ease;
+  }
+  .notes-panel.open { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .notes-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9a7b2f;
+    margin-bottom: 6px;
+  }
+  .notes-textarea {
+    width: 100%;
+    min-height: 80px;
+    border: 1px solid #e0d090;
+    border-radius: 3px;
+    background: white;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 8px 10px;
+    resize: vertical;
+    line-height: 1.5;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .notes-textarea:focus { border-color: var(--gold); }
+  .notes-textarea::placeholder { color: #c8b87a; font-style: italic; }
+
+  /* ── Motion tracker (for ACTION items) ── */
+  .motion-tracker {
+    margin-top: 10px;
+    background: var(--motion-bg);
+    border: 1px solid var(--motion-border);
+    border-radius: 4px;
+    padding: 10px 14px;
+  }
+  .motion-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .motion-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+    align-items: center;
+  }
+  .motion-row label {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 500;
+    min-width: 60px;
+  }
+  .motion-input {
+    flex: 1;
+    min-width: 120px;
+    border: 1px solid #b0ccb0;
+    border-radius: 3px;
+    background: white;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 4px 8px;
+    outline: none;
+  }
+  .motion-input:focus { border-color: var(--accent); }
+  .motion-result {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .motion-result label { font-size: 11.5px; color: var(--muted); font-weight: 500; }
+  .result-btn {
+    padding: 3px 12px;
+    border-radius: 3px;
+    border: 1px solid #aaa;
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+  .result-btn[data-val="approved"] { border-color: #4a9a4a; color: #2a7a2a; }
+  .result-btn[data-val="approved"].selected { background: #2a7a2a; color: white; border-color: #2a7a2a; }
+  .result-btn[data-val="denied"] { border-color: #c0392b; color: #c0392b; }
+  .result-btn[data-val="denied"].selected { background: #c0392b; color: white; border-color: #c0392b; }
+  .result-btn[data-val="tabled"] { border-color: #e67e22; color: #c96a10; }
+  .result-btn[data-val="tabled"].selected { background: #e67e22; color: white; border-color: #e67e22; }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  /* ── Export modal ── */
+  #export-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  #export-modal.open { display: flex; }
+  .modal-box {
+    background: white;
+    border-radius: 8px;
+    padding: 32px 36px;
+    max-width: 560px;
+    width: 90%;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.2);
+  }
+  .modal-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .modal-box p { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+  #export-content {
+    width: 100%;
+    height: 260px;
+    font-family: monospace;
+    font-size: 12px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 10px;
+    resize: none;
+    background: #fafafa;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .modal-btn {
+    padding: 8px 20px;
+    border-radius: 4px;
+    border: none;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .modal-btn.primary { background: var(--accent); color: white; }
+  .modal-btn.primary:hover { background: #1e3d1e; }
+  .modal-btn.secondary { background: #eee; color: var(--ink); }
+  .modal-btn.secondary:hover { background: #ddd; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border: none; padding: 32px 48px; }
+    .toolbar { display: none; }
+    .notes-toggle { display: none; }
+    .notes-panel { display: block !important; border: 1px solid #ccc; background: #fffef5; }
+    .motion-tracker { display: block !important; }
+    #export-modal { display: none !important; }
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 32px 20px; }
+    .motion-row { flex-direction: column; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Export Modal -->
+<div id="export-modal">
+  <div class="modal-box">
+    <h2>Export Meeting Notes</h2>
+    <p>Copy the text below to paste into OneNote, Word, email, or any other application.</p>
+    <textarea id="export-content" readonly></textarea>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="document.getElementById('export-modal').classList.remove('open')">Close</button>
+      <button class="modal-btn primary" onclick="copyExport()">Copy to Clipboard</button>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div>
+      <div class="toolbar-title">📋 Live Meeting Notes</div>
+      <div id="save-status">Notes auto-save as you type</div>
+    </div>
+    <div class="toolbar-actions">
+      <button class="toolbar-btn" onclick="expandAll()">Expand All Notes</button>
+      <button class="toolbar-btn" onclick="collapseAll()">Collapse All</button>
+      <button class="toolbar-btn" onclick="clearAll()">Clear All Notes</button>
+      <button class="toolbar-btn gold" onclick="exportNotes()">Export Notes</button>
+      <button class="toolbar-btn" onclick="window.print()">🖨 Print</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="org-name">Rugby Job Development Authority</div>
+    <div class="meeting-title">Board Meeting Agenda</div>
+    <div class="meeting-meta">
+      <div class="meta-item"><strong>Date:</strong> Wednesday, May 20, 2026</div>
+      <div class="meta-item"><strong>Time:</strong> 7:00 AM</div>
+      <div class="meta-item"><strong>Location:</strong> JDA Office</div>
+    </div>
+  </div>
+
+  <!-- OPENING -->
+  <div class="section">
+    <div class="section-label">Opening</div>
+
+    <div class="agenda-item">
+      <div class="item-number">1</div>
+      <div class="item-body">
+        <div class="item-title">Call to Order / Roll Call</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-1" placeholder="Members present, time called to order…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">2</div>
+      <div class="item-body">
+        <div class="item-title">Consideration of Agenda</div>
+        <div class="item-note">Amendments, additions, deletions</div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/May_2026_Agenda_2.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Agenda (Revised)
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/May_2026_Agenda.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Agenda (Original)
+          </a>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-2" placeholder="Any amendments or additions to agenda…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">3</div>
+      <div class="item-body">
+        <div class="item-title">Consider April 15, 2026 Meeting Minutes <span class="action-badge">Action</span></div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/4_15_26_minutes.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            April 15, 2026 Minutes
+          </a>
+        </div>
+        <div class="motion-tracker">
+          <div class="motion-label">⚖ Motion Tracker</div>
+          <div class="motion-row">
+            <label>Moved by</label>
+            <input class="motion-input" data-id="motion-3-moved" placeholder="Member name…" oninput="autoSave(this)">
+            <label>Seconded</label>
+            <input class="motion-input" data-id="motion-3-second" placeholder="Member name…" oninput="autoSave(this)">
+          </div>
+          <div class="motion-result">
+            <label>Result:</label>
+            <button class="result-btn" data-val="approved" onclick="setResult(this)">Approved</button>
+            <button class="result-btn" data-val="denied" onclick="setResult(this)">Denied</button>
+            <button class="result-btn" data-val="tabled" onclick="setResult(this)">Tabled</button>
+          </div>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-3" placeholder="Discussion notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREASURER'S REPORT -->
+  <div class="section">
+    <div class="section-label">Treasurer's Report</div>
+
+    <div class="agenda-item">
+      <div class="item-number">4a</div>
+      <div class="item-body">
+        <div class="item-title">Bill List <span class="action-badge">Action</span></div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/Bill_List_May_2026.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            May 2026 Bill List
+          </a>
+        </div>
+        <div class="motion-tracker">
+          <div class="motion-label">⚖ Motion Tracker</div>
+          <div class="motion-row">
+            <label>Moved by</label>
+            <input class="motion-input" data-id="motion-4a-moved" placeholder="Member name…" oninput="autoSave(this)">
+            <label>Seconded</label>
+            <input class="motion-input" data-id="motion-4a-second" placeholder="Member name…" oninput="autoSave(this)">
+          </div>
+          <div class="motion-result">
+            <label>Result:</label>
+            <button class="result-btn" data-val="approved" onclick="setResult(this)">Approved</button>
+            <button class="result-btn" data-val="denied" onclick="setResult(this)">Denied</button>
+            <button class="result-btn" data-val="tabled" onclick="setResult(this)">Tabled</button>
+          </div>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-4a" placeholder="Discussion notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">4b</div>
+      <div class="item-body">
+        <div class="item-title">Financials <span class="action-badge">Action</span></div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/ProfitandLoss.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Profit & Loss (YTD)
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/ProfitandLossbyMonth.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            P&L by Month
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/ProfitandLossbyMeetingtoMeeting.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            P&L Meeting to Meeting
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/BalanceSheetKYTD.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Balance Sheet
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/BalanceSheetComparison.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Balance Sheet Comparison
+          </a>
+        </div>
+        <div class="motion-tracker">
+          <div class="motion-label">⚖ Motion Tracker</div>
+          <div class="motion-row">
+            <label>Moved by</label>
+            <input class="motion-input" data-id="motion-4b-moved" placeholder="Member name…" oninput="autoSave(this)">
+            <label>Seconded</label>
+            <input class="motion-input" data-id="motion-4b-second" placeholder="Member name…" oninput="autoSave(this)">
+          </div>
+          <div class="motion-result">
+            <label>Result:</label>
+            <button class="result-btn" data-val="approved" onclick="setResult(this)">Approved</button>
+            <button class="result-btn" data-val="denied" onclick="setResult(this)">Denied</button>
+            <button class="result-btn" data-val="tabled" onclick="setResult(this)">Tabled</button>
+          </div>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-4b" placeholder="Discussion notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OLD BUSINESS -->
+  <div class="section">
+    <div class="section-label">Old Business — Executive Director Report</div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.1</div>
+      <div class="item-body">
+        <div class="item-title">BDO Zone</div>
+        <div class="item-note">Funding announced May 15th; verifying application submission</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-1" placeholder="Update notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.2</div>
+      <div class="item-body">
+        <div class="item-title">Chalmers Addition — RRC Sparks <span class="action-badge">Action</span></div>
+        <div class="item-note">Development Agreement & Commitment Letter for approval; GFY Customcrafts/Brookshire Co. two homes broke ground</div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/Finalized_Development_Agreement_-_Edited_5_14.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Development Agreement
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/Commitment_Letter.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Commitment Letter
+          </a>
+        </div>
+        <div class="motion-tracker">
+          <div class="motion-label">⚖ Motion Tracker</div>
+          <div class="motion-row">
+            <label>Moved by</label>
+            <input class="motion-input" data-id="motion-5-2-moved" placeholder="Member name…" oninput="autoSave(this)">
+            <label>Seconded</label>
+            <input class="motion-input" data-id="motion-5-2-second" placeholder="Member name…" oninput="autoSave(this)">
+          </div>
+          <div class="motion-result">
+            <label>Result:</label>
+            <button class="result-btn" data-val="approved" onclick="setResult(this)">Approved</button>
+            <button class="result-btn" data-val="denied" onclick="setResult(this)">Denied</button>
+            <button class="result-btn" data-val="tabled" onclick="setResult(this)">Tabled</button>
+          </div>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-2" placeholder="Discussion notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.3</div>
+      <div class="item-body">
+        <div class="item-title">Housing Report</div>
+        <div class="item-note">Parkland Housing, Blighted Homes, etc.</div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/2Housing_Narrative.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Housing Narrative
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/2018_Housing_Narrative.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            2018 Housing Narrative
+          </a>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-3" placeholder="Update notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.4</div>
+      <div class="item-body">
+        <div class="item-title">Copper Creek Flex PACE <span class="action-badge">Action</span></div>
+        <div class="item-note">Approval of current BND buydown</div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/Copper_Creek_BuydownAccount.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Copper Creek Buydown Account
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/Flex_Pace_051926.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Flex PACE Summary
+          </a>
+        </div>
+        <div class="motion-tracker">
+          <div class="motion-label">⚖ Motion Tracker</div>
+          <div class="motion-row">
+            <label>Moved by</label>
+            <input class="motion-input" data-id="motion-5-4-moved" placeholder="Member name…" oninput="autoSave(this)">
+            <label>Seconded</label>
+            <input class="motion-input" data-id="motion-5-4-second" placeholder="Member name…" oninput="autoSave(this)">
+          </div>
+          <div class="motion-result">
+            <label>Result:</label>
+            <button class="result-btn" data-val="approved" onclick="setResult(this)">Approved</button>
+            <button class="result-btn" data-val="denied" onclick="setResult(this)">Denied</button>
+            <button class="result-btn" data-val="tabled" onclick="setResult(this)">Tabled</button>
+          </div>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-4" placeholder="Discussion notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.5</div>
+      <div class="item-body">
+        <div class="item-title">RV Park Funding Update</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-5" placeholder="Update notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.6</div>
+      <div class="item-body">
+        <div class="item-title">LMF / Flex / Impact Fund <span class="action-badge">Action</span></div>
+        <div class="item-note">Procedures, establishing fund amount — final approval</div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/JDA_Loan_Commitee_SOP_and_Charter.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Loan Committee SOP & Charter
+          </a>
+        </div>
+        <div class="motion-tracker">
+          <div class="motion-label">⚖ Motion Tracker</div>
+          <div class="motion-row">
+            <label>Moved by</label>
+            <input class="motion-input" data-id="motion-5-6-moved" placeholder="Member name…" oninput="autoSave(this)">
+            <label>Seconded</label>
+            <input class="motion-input" data-id="motion-5-6-second" placeholder="Member name…" oninput="autoSave(this)">
+          </div>
+          <div class="motion-result">
+            <label>Result:</label>
+            <button class="result-btn" data-val="approved" onclick="setResult(this)">Approved</button>
+            <button class="result-btn" data-val="denied" onclick="setResult(this)">Denied</button>
+            <button class="result-btn" data-val="tabled" onclick="setResult(this)">Tabled</button>
+          </div>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-6" placeholder="Discussion notes, fund amount decided…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.7</div>
+      <div class="item-body">
+        <div class="item-title">ND Economic Development Guide</div>
+        <div class="item-note">Magazine published</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-7" placeholder="Notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.8</div>
+      <div class="item-body">
+        <div class="item-title">Prairie Village Museum Sign <span class="action-badge">Action</span></div>
+        <div class="item-note">50/50 Sign Program application — approval</div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/Prairie_Musuem_Sign_Application.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Sign Application
+          </a>
+        </div>
+        <div class="motion-tracker">
+          <div class="motion-label">⚖ Motion Tracker</div>
+          <div class="motion-row">
+            <label>Moved by</label>
+            <input class="motion-input" data-id="motion-5-8-moved" placeholder="Member name…" oninput="autoSave(this)">
+            <label>Seconded</label>
+            <input class="motion-input" data-id="motion-5-8-second" placeholder="Member name…" oninput="autoSave(this)">
+          </div>
+          <div class="motion-result">
+            <label>Result:</label>
+            <button class="result-btn" data-val="approved" onclick="setResult(this)">Approved</button>
+            <button class="result-btn" data-val="denied" onclick="setResult(this)">Denied</button>
+            <button class="result-btn" data-val="tabled" onclick="setResult(this)">Tabled</button>
+          </div>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-8" placeholder="Discussion notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.9</div>
+      <div class="item-body">
+        <div class="item-title">ND LOIS / Lasso / Resimplifi</div>
+        <div class="item-note">Gathering information</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-9" placeholder="Notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.10</div>
+      <div class="item-body">
+        <div class="item-title">Chalmers Lawn Mowing / Weed Control</div>
+        <div class="item-note">Craig Zachmeier — $275, no bids needed / Rachael</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-10" placeholder="Notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">5.11</div>
+      <div class="item-body">
+        <div class="item-title">EDND SparkED Conference</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-5-11" placeholder="Notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW BUSINESS -->
+  <div class="section">
+    <div class="section-label">New Business</div>
+
+    <div class="agenda-item">
+      <div class="item-number">6a</div>
+      <div class="item-body">
+        <div class="item-title">Business Incentive Program</div>
+        <div class="item-note">Presented by Duane O'Marro</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-6a" placeholder="Discussion notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">6b</div>
+      <div class="item-body">
+        <div class="item-title">SBPC / Minot Housing Authority Grants for Blighted Homes <span class="action-badge">Action</span></div>
+        <div class="doc-links">
+          <a class="doc-link" href="/mnt/user-data/uploads/2018_Pierce_County_Multi_Family_Rehab_App_Guidelines.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Multi-Family Rehab Guidelines
+          </a>
+          <a class="doc-link" href="/mnt/user-data/uploads/2018_Housing_Narrative.pdf" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            SBPC Housing Rehab Narrative
+          </a>
+        </div>
+        <div class="motion-tracker">
+          <div class="motion-label">⚖ Motion Tracker</div>
+          <div class="motion-row">
+            <label>Moved by</label>
+            <input class="motion-input" data-id="motion-6b-moved" placeholder="Member name…" oninput="autoSave(this)">
+            <label>Seconded</label>
+            <input class="motion-input" data-id="motion-6b-second" placeholder="Member name…" oninput="autoSave(this)">
+          </div>
+          <div class="motion-result">
+            <label>Result:</label>
+            <button class="result-btn" data-val="approved" onclick="setResult(this)">Approved</button>
+            <button class="result-btn" data-val="denied" onclick="setResult(this)">Denied</button>
+            <button class="result-btn" data-val="tabled" onclick="setResult(this)">Tabled</button>
+          </div>
+        </div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-6b" placeholder="Discussion notes…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="section">
+    <div class="section-label">Closing</div>
+
+    <div class="agenda-item">
+      <div class="item-number">7</div>
+      <div class="item-body">
+        <div class="item-title">Correspondence Received, Special Meetings & Reminders</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-7" placeholder="Correspondence items, upcoming meetings…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="item-number">8</div>
+      <div class="item-body">
+        <div class="item-title">Adjournment</div>
+        <div class="item-note">Next Meeting: June 2026 (TBD)</div>
+        <button class="notes-toggle" onclick="toggleNotes(this)">✏ Add Notes</button>
+        <div class="notes-panel">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes-textarea" data-id="item-8" placeholder="Time adjourned, next meeting date…" oninput="autoSave(this)"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Rugby Job Development Authority &nbsp;·&nbsp; 126 2nd Ave SW, Suite 101, Rugby, ND 58368<br>
+    <span style="margin-top:6px;display:block;">Items marked <strong style="color:var(--gold)">ACTION</strong> require a board motion and vote. Notes auto-save in your browser.</span>
+  </div>
+
+</div>
+
+<script>
+  // ── Auto-save to localStorage ──
+  function autoSave(el) {
+    const key = el.dataset.id;
+    if (!key) return;
+    try { localStorage.setItem('jda_' + key, el.value); } catch(e) {}
+    showSaved();
+  }
+
+  let saveTimer;
+  function showSaved() {
+    const el = document.getElementById('save-status');
+    el.textContent = 'Saved ✓';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => { el.textContent = 'Notes auto-save as you type'; }, 2000);
+  }
+
+  // ── Load saved notes on page open ──
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-id]').forEach(el => {
+      try {
+        const saved = localStorage.getItem('jda_' + el.dataset.id);
+        if (saved) {
+          el.value = saved;
+          // Open panel if there's content
+          if (el.tagName === 'TEXTAREA' && saved.trim()) {
+            const panel = el.closest('.notes-panel');
+            const btn = panel ? panel.previousElementSibling : null;
+            if (panel && btn && btn.classList.contains('notes-toggle')) {
+              panel.classList.add('open');
+              btn.classList.add('active');
+              btn.textContent = '▾ Notes';
+            }
+          }
+          // Restore result buttons
+          if (el.tagName === 'INPUT') {
+            // handled separately
+          }
+        }
+      } catch(e) {}
+    });
+
+    // Restore result buttons
+    document.querySelectorAll('.motion-result').forEach(row => {
+      const groupId = row.closest('.motion-tracker').querySelector('.motion-input') 
+        ? row.closest('.motion-tracker').querySelector('.motion-input').dataset.id.replace('-moved','') 
+        : null;
+      if (!groupId) return;
+      try {
+        const saved = localStorage.getItem('jda_result_' + groupId);
+        if (saved) {
+          row.querySelectorAll('.result-btn').forEach(b => {
+            if (b.dataset.val === saved) b.classList.add('selected');
+          });
+        }
+      } catch(e) {}
+    });
+  });
+
+  // ── Toggle notes panel ──
+  function toggleNotes(btn) {
+    const panel = btn.nextElementSibling;
+    const isOpen = panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.classList.toggle('active');
+    btn.textContent = isOpen ? '✏ Add Notes' : '▾ Notes';
+    if (!isOpen) panel.querySelector('textarea').focus();
+  }
+
+  // ── Expand / Collapse all ──
+  function expandAll() {
+    document.querySelectorAll('.notes-panel').forEach(p => p.classList.add('open'));
+    document.querySelectorAll('.notes-toggle').forEach(b => {
+      b.classList.add('active');
+      b.textContent = '▾ Notes';
+    });
+  }
+  function collapseAll() {
+    document.querySelectorAll('.notes-panel').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.notes-toggle').forEach(b => {
+      b.classList.remove('active');
+      b.textContent = '✏ Add Notes';
+    });
+  }
+
+  // ── Clear all notes ──
+  function clearAll() {
+    if (!confirm('Clear all notes and motion data? This cannot be undone.')) return;
+    document.querySelectorAll('.notes-textarea').forEach(t => { t.value = ''; try { localStorage.removeItem('jda_' + t.dataset.id); } catch(e){} });
+    document.querySelectorAll('.motion-input').forEach(i => { i.value = ''; try { localStorage.removeItem('jda_' + i.dataset.id); } catch(e){} });
+    document.querySelectorAll('.result-btn').forEach(b => b.classList.remove('selected'));
+    collapseAll();
+  }
+
+  // ── Result buttons ──
+  function setResult(btn) {
+    const row = btn.closest('.motion-result');
+    row.querySelectorAll('.result-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    // Save
+    const tracker = btn.closest('.motion-tracker');
+    const firstInput = tracker.querySelector('.motion-input');
+    if (firstInput) {
+      const groupId = firstInput.dataset.id.replace('-moved','');
+      try { localStorage.setItem('jda_result_' + groupId, btn.dataset.val); } catch(e) {}
+    }
+    showSaved();
+  }
+
+  // ── Export notes ──
+  function exportNotes() {
+    let out = 'RUGBY JDA BOARD MEETING — MAY 20, 2026\n';
+    out += 'Exported: ' + new Date().toLocaleString() + '\n';
+    out += '='.repeat(50) + '\n\n';
+
+    const items = [
+      { label: '1. Call to Order / Roll Call', noteId: 'item-1' },
+      { label: '2. Consideration of Agenda', noteId: 'item-2' },
+      { label: '3. April 15 Minutes', noteId: 'item-3', motionId: 'motion-3' },
+      { label: '4a. Bill List', noteId: 'item-4a', motionId: 'motion-4a' },
+      { label: '4b. Financials', noteId: 'item-4b', motionId: 'motion-4b' },
+      { label: '5.1 BDO Zone', noteId: 'item-5-1' },
+      { label: '5.2 Chalmers Addition — RRC Sparks', noteId: 'item-5-2', motionId: 'motion-5-2' },
+      { label: '5.3 Housing Report', noteId: 'item-5-3' },
+      { label: '5.4 Copper Creek Flex PACE', noteId: 'item-5-4', motionId: 'motion-5-4' },
+      { label: '5.5 RV Park Funding Update', noteId: 'item-5-5' },
+      { label: '5.6 LMF / Flex / Impact Fund', noteId: 'item-5-6', motionId: 'motion-5-6' },
+      { label: '5.7 ND Economic Development Guide', noteId: 'item-5-7' },
+      { label: '5.8 Prairie Village Museum Sign', noteId: 'item-5-8', motionId: 'motion-5-8' },
+      { label: '5.9 ND LOIS / Lasso / Resimplifi', noteId: 'item-5-9' },
+      { label: '5.10 Chalmers Lawn Mowing', noteId: 'item-5-10' },
+      { label: '5.11 EDND SparkED Conference', noteId: 'item-5-11' },
+      { label: '6a. Business Incentive Program', noteId: 'item-6a' },
+      { label: '6b. SBPC / Minot Housing Grants', noteId: 'item-6b', motionId: 'motion-6b' },
+      { label: '7. Correspondence & Reminders', noteId: 'item-7' },
+      { label: '8. Adjournment', noteId: 'item-8' },
+    ];
+
+    items.forEach(item => {
+      out += item.label + '\n';
+      out += '-'.repeat(40) + '\n';
+      if (item.motionId) {
+        const moved = getVal(item.motionId + '-moved');
+        const second = getVal(item.motionId + '-second');
+        const result = getResult(item.motionId);
+        if (moved || second || result) {
+          out += 'MOTION: Moved by ' + (moved || '___') + ' | Seconded by ' + (second || '___') + ' | Result: ' + (result || 'Pending') + '\n';
+        }
+      }
+      const note = getVal(item.noteId);
+      out += (note || '(no notes)') + '\n\n';
+    });
+
+    document.getElementById('export-content').value = out;
+    document.getElementById('export-modal').classList.add('open');
+  }
+
+  function getVal(id) {
+    const el = document.querySelector('[data-id="' + id + '"]');
+    return el ? el.value.trim() : '';
+  }
+
+  function getResult(motionId) {
+    const tracker = Array.from(document.querySelectorAll('.motion-input'))
+      .find(i => i.dataset.id === motionId + '-moved');
+    if (!tracker) return '';
+    const selected = tracker.closest('.motion-tracker').querySelector('.result-btn.selected');
+    return selected ? selected.dataset.val.charAt(0).toUpperCase() + selected.dataset.val.slice(1) : '';
+  }
+
+  function copyExport() {
+    const ta = document.getElementById('export-content');
+    ta.select();
+    document.execCommand('copy');
+    const btn = event.target;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy to Clipboard'; }, 2000);
+  }
+
+  // Close modal on backdrop click
+  document.getElementById('export-modal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+</script>
+</body>
+</html>
